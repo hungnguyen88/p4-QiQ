@@ -1,0 +1,69 @@
+{
+  "target": "bmv2",
+  "p4info": "build/basic.p4.p4info.txt",
+  "bmv2_json": "build/basic.json",
+  "table_entries": [
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "default_action": true,
+      "action_name": "MyIngress.drop",
+      "action_params": { }
+    },
+    {
+      "table": "MyIngress.vlan_exact",
+      "default_action": true,
+      "action_name": "MyIngress.drop",
+      "action_params": { }
+    },
+    {
+      "table": "MyIngress.standard_qiq_exact",
+      "default_action": true,
+      "action_name": "MyIngress.drop",
+      "action_params": { }
+    },
+    {
+      "table": "MyIngress.vlan_exact",
+      "match": {
+        "hdr.ethernet.dstAddr": "08:00:00:00:05:55",
+        "hdr.vlan.VID": 500
+      },
+      "action_name": "MyIngress.vlan_forward",
+      "action_params": {
+         "port": 1
+      }
+    },
+    {
+      "table": "MyIngress.vlan_exact",
+      "match": {
+        "hdr.ethernet.dstAddr": "08:00:00:00:09:99",
+        "hdr.vlan.VID": 500
+      },
+      "action_name": "MyIngress.vlan_forward",
+      "action_params": {
+         "port": 3
+      }
+    },
+    {
+      "table": "MyIngress.vlan_exact",
+      "match": {
+        "hdr.ethernet.dstAddr": "08:00:00:00:01:11",
+        "hdr.vlan.VID": 1000
+      },
+      "action_name": "MyIngress.vlan_forward",
+      "action_params": {
+         "port": 1
+      }
+    },
+    {
+      "table": "MyIngress.vlan_exact",
+      "match": {
+        "hdr.ethernet.dstAddr": "08:00:00:00:08:88",
+        "hdr.vlan.VID": 1000
+      },
+      "action_name": "MyIngress.vlan_forward",
+      "action_params": {
+         "port": 2
+      }
+    }   
+  ]
+}
