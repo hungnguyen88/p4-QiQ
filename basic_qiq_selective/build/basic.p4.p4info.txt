@@ -1,0 +1,471 @@
+pkg_info {
+  arch: "v1model"
+}
+tables {
+  preamble {
+    id: 33590217
+    name: "MyIngress.vlan_access_exact"
+    alias: "vlan_access_exact"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ethernet.dstAddr"
+    bitwidth: 48
+    match_type: EXACT
+  }
+  match_fields {
+    id: 2
+    name: "standard_metadata.ingress_port"
+    bitwidth: 9
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16838607
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33574068
+    name: "MyIngress.ipv4_lpm"
+    alias: "ipv4_lpm"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ipv4.dstAddr"
+    bitwidth: 32
+    match_type: LPM
+  }
+  action_refs {
+    id: 16799317
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33584263
+    name: "MyIngress.vlan_exact"
+    alias: "vlan_exact"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ethernet.dstAddr"
+    bitwidth: 48
+    match_type: EXACT
+  }
+  match_fields {
+    id: 2
+    name: "hdr.vlan.VID"
+    bitwidth: 12
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16816399
+  }
+  action_refs {
+    id: 16803209
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33575436
+    name: "MyIngress.standard_qiq_access_exact"
+    alias: "standard_qiq_access_exact"
+  }
+  match_fields {
+    id: 1
+    name: "standard_metadata.ingress_port"
+    bitwidth: 9
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16799623
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33619646
+    name: "MyIngress.selective1_qiq_access_exact"
+    alias: "selective1_qiq_access_exact"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ethernet.srcAddr"
+    bitwidth: 48
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16816658
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33570856
+    name: "MyIngress.selective2_qiq_access_exact"
+    alias: "selective2_qiq_access_exact"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.vlan.VID"
+    bitwidth: 12
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16797723
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33614331
+    name: "MyIngress.standard_qiq_exact"
+    alias: "standard_qiq_exact"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.vlan_qiq.VID"
+    bitwidth: 12
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16794645
+  }
+  action_refs {
+    id: 16821865
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33604436
+    name: "MyIngress.selective1_qiq_exact"
+    alias: "selective1_qiq_exact"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.vlan_qiq.VID"
+    bitwidth: 12
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16809900
+  }
+  action_refs {
+    id: 16838905
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33587765
+    name: "MyIngress.selective2_qiq_exact"
+    alias: "selective2_qiq_exact"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.vlan_qiq.VID"
+    bitwidth: 12
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16790712
+  }
+  action_refs {
+    id: 16809014
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+actions {
+  preamble {
+    id: 16800567
+    name: "NoAction"
+    alias: "NoAction"
+  }
+}
+actions {
+  preamble {
+    id: 16805608
+    name: "MyIngress.drop"
+    alias: "drop"
+  }
+}
+actions {
+  preamble {
+    id: 16799317
+    name: "MyIngress.ipv4_forward"
+    alias: "ipv4_forward"
+  }
+  params {
+    id: 1
+    name: "dstAddr"
+    bitwidth: 48
+  }
+  params {
+    id: 2
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16838607
+    name: "MyIngress.vlan_access"
+    alias: "vlan_access"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+  params {
+    id: 2
+    name: "PRI"
+    bitwidth: 3
+  }
+  params {
+    id: 3
+    name: "CFI"
+    bitwidth: 1
+  }
+  params {
+    id: 4
+    name: "VID"
+    bitwidth: 12
+  }
+}
+actions {
+  preamble {
+    id: 16816399
+    name: "MyIngress.vlan_release"
+    alias: "vlan_release"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16803209
+    name: "MyIngress.vlan_forward"
+    alias: "vlan_forward"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16799623
+    name: "MyIngress.standard_qiq_access"
+    alias: "standard_qiq_access"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+  params {
+    id: 2
+    name: "PRI"
+    bitwidth: 3
+  }
+  params {
+    id: 3
+    name: "CFI"
+    bitwidth: 1
+  }
+  params {
+    id: 4
+    name: "VID"
+    bitwidth: 12
+  }
+}
+actions {
+  preamble {
+    id: 16816658
+    name: "MyIngress.selective1_qiq_access"
+    alias: "selective1_qiq_access"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+  params {
+    id: 2
+    name: "PRI"
+    bitwidth: 3
+  }
+  params {
+    id: 3
+    name: "CFI"
+    bitwidth: 1
+  }
+  params {
+    id: 4
+    name: "VID"
+    bitwidth: 12
+  }
+}
+actions {
+  preamble {
+    id: 16797723
+    name: "MyIngress.selective2_qiq_access"
+    alias: "selective2_qiq_access"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+  params {
+    id: 2
+    name: "PRI"
+    bitwidth: 3
+  }
+  params {
+    id: 3
+    name: "CFI"
+    bitwidth: 1
+  }
+  params {
+    id: 4
+    name: "VID"
+    bitwidth: 12
+  }
+}
+actions {
+  preamble {
+    id: 16809900
+    name: "MyIngress.selective1_qiq_release"
+    alias: "selective1_qiq_release"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16838905
+    name: "MyIngress.selective1_qiq_forward"
+    alias: "selective1_qiq_forward"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16790712
+    name: "MyIngress.selective2_qiq_release"
+    alias: "selective2_qiq_release"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16809014
+    name: "MyIngress.selective2_qiq_forward"
+    alias: "selective2_qiq_forward"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16794645
+    name: "MyIngress.standard_qiq_release"
+    alias: "standard_qiq_release"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16821865
+    name: "MyIngress.standard_qiq_forward"
+    alias: "standard_qiq_forward"
+  }
+  params {
+    id: 1
+    name: "port"
+    bitwidth: 9
+  }
+}
+type_info {
+}
