@@ -1,0 +1,73 @@
+{
+  "target": "bmv2",
+  "p4info": "build/basic.p4.p4info.txt",
+  "bmv2_json": "build/basic.json",
+  "table_entries": [
+    {
+      "table": "MyIngress.ipv4_lpm",
+      "default_action": true,
+      "action_name": "MyIngress.drop",
+      "action_params": { }
+    },
+    {
+      "table": "MyIngress.vlan_exact",
+      "default_action": true,
+      "action_name": "MyIngress.drop",
+      "action_params": { }
+    },
+    {
+      "table": "MyIngress.vlan_access_exact",
+      "match": {
+        "hdr.ethernet.dstAddr": "FF:FF:FF:FF:FF:FF",
+        "standard_metadata.ingress_port": 1
+      },
+      "action_name": "MyIngress.vlan_access",
+      "action_params": {
+        "port": 2,
+        "PRI": 0,  
+        "CFI": 0, 
+        "VID": 10 
+      }
+    },
+    {
+      "table": "MyIngress.vlan_access_exact",
+      "match": {
+        "hdr.ethernet.dstAddr": "08:00:00:00:03:33",
+        "standard_metadata.ingress_port": 1
+      },
+      "action_name": "MyIngress.vlan_access",
+      "action_params": {
+        "port": 2,
+        "PRI": 0,  
+        "CFI": 0, 
+        "VID": 10 
+      }
+    },
+    {
+      "table": "MyIngress.selective3_qiq_arp_exact",
+      "match": {
+        "hdr.vlan_qiq.VID": 1000,
+        "hdr.ipv4.dstAddr": ["10.1.1.1", 32] 
+      },
+      "action_name": "MyIngress.selective3_qiq_arp",
+      "action_params": {
+        "port": 1,
+        "srcAddr": "08:00:00:01:01:FE",
+        "dstAddr": "08:00:00:01:01:11"
+      }
+    },
+    {
+      "table": "MyIngress.selective3_qiq_arp_exact",
+      "match": {
+        "hdr.vlan_qiq.VID": 1000,
+        "hdr.ipv4.dstAddr": ["10.1.1.2", 32]
+      },
+      "action_name": "MyIngress.selective3_qiq_arp",
+      "action_params": {
+        "port": 1,
+        "srcAddr": "08:00:00:01:01:FE",
+        "dstAddr": "08:00:00:01:01:22"
+      }
+    }      
+  ]
+}

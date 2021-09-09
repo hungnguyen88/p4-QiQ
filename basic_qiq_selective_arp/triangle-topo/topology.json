@@ -1,0 +1,20 @@
+{
+    "hosts": {
+        "h1": {"ip": "10.1.1.1/24", "mac": "08:00:00:01:01:11",
+               "commands":["route add default gw 10.1.1.254 dev eth0",
+                           "arp -i eth0 -s 10.1.1.254 08:00:00:00:01:FE"]},
+        "h2": {"ip": "10.1.1.2/24", "mac": "08:00:00:01:01:22",
+               "commands":["route add default gw 10.1.1.254 dev eth0",
+                           "arp -i eth0 -s 10.1.1.254 08:00:00:00:01:FE"]}      
+    },
+    "switches": {
+        "s1": { "runtime_json" : "triangle-topo/s1-runtime.json" },
+        "s2": { "runtime_json" : "triangle-topo/s2-runtime.json" },
+        "s3": { "runtime_json" : "triangle-topo/s3-runtime.json" },
+	"s4": { "runtime_json" : "triangle-topo/s4-runtime.json" }
+    },
+    "links": [
+        ["s1-p1", "s2-p3"], ["s2-p2", "s3-p2"], ["s2-p1", "s4-p1"], 
+	["h1", "s4-p2"], ["h2", "s3-p1"]
+    	]
+}
