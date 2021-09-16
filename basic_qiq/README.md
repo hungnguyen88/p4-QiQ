@@ -117,8 +117,7 @@ H1 will receive a packet sent from H6 with the payload "H6 Hello H1"
 
 ![triangle-topo](./triangle-topo/Selective-QiQ-S1-and-S2-forward-all-packets-received-from-H4-to-H7.png)
 
-In order to forward all packets receive from H4 to H7, we need to design a selective QiQ in S1 and S2. The selective QiQ will base on src MAC to assign a QiQ (Outer) Tag ID. When S2 receive packets from S1, S2 will use QiQ (Outer) Tag ID to decide the egress port to send packets out.
-
+In order to forward all packets received from H4 to H7, we need to design a selective QiQ policy in S1 and S2. The selective QiQ will base on src MAC to assign a QiQ (Outer) Tag ID. When S2 receive packets from S1, S2 will use QiQ (Outer) Tag ID to decide the egress port to send packets out.
 
 Use the cmd to show all messages sent to H6 and H7:
    ```bash
