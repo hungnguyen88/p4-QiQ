@@ -11,6 +11,9 @@ populate with static rules. In the exercise, we will make examples with Standard
 We will use the following topology for this exercise:
 ![triangle-topo](./triangle-topo/qiq-network-simulation.png)
 
+Tables of each switch are defined in sX-runtime.json:
+[Switch S1](./triangle-topo/s1-runtime.json), [Switch S2](./triangle-topo/s2-runtime.json), [Switch S3](./triangle-topo/s3-runtime.json), [Switch S4](./triangle-topo/s4-runtime.json), [Switch S5](./triangle-topo/s5-runtime.json)
+
 Our P4 program will be written for the V1Model architecture implemented
 on P4.org's bmv2 software switch. The architecture file for the V1Model
 can be found at: /usr/local/share/p4c/p4include/v1model.p4. This file
