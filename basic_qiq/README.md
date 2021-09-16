@@ -6,7 +6,7 @@ The objective of this exercise is to write a P4 program that
 implements basic QiQ.
 
 Your switch will have tables, which the control plane will
-populate with static rules.
+populate with static rules. In the code we will make an example with Standard QiQ and Selective QiQ (base on Source MAC).
 
 We will use the following topology for this exercise:
 ![triangle-topo](./triangle-topo/qiq-network-simulation.png)
