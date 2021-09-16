@@ -6,10 +6,7 @@ The objective of this exercise is to write a P4 program that
 implements basic QiQ.
 
 Your switch will have tables, which the control plane will
-populate with static rules. Each rule will map an IP address to the
-MAC address and output port for the next hop. We have already defined
-the control plane rules, so you only need to implement the data plane
-logic of your P4 program.
+populate with static rules.
 
 We will use the following topology for this exercise. It is a single
 pod of a fat-tree topology and henceforth referred to as pod-topo:
@@ -74,7 +71,12 @@ Use the cmd to send a message from H2 to H5:
    ```
 H5 will receive a packet sent from H2 with the payload "H2 Hello H5"
 
-In the test, 
+In the test, when the packet send from H2 to network, the tables below will be applied and call action:
+Switch S5 - vlan_access_exact table             -> call action: vlan_access
+Switch S4 - vlan_exact table                    -> call action: vlan_forward
+Switch S1 - standard_qiq_access_exact  table    -> call action: standard_qiq_access
+Switch S2 - standard_qiq_exact table            -> call action: standard_qiq_release
+Switch S3 - vlan_exact table                    -> call action: vlan_release
 
 ## Step 3: Test Standard QiQ - Enable H6 send message to H1
 
@@ -89,6 +91,13 @@ Use the cmd to send a message from H6 to H1:
    h6> ./send_vlan.py 0.0.0.0 08:00:00:00:01:11 "H6 Hello H1"
    ```
 H1 will receive a packet sent from H6 with the payload "H6 Hello H1"
+
+In the test, when the packet send from H6 to network, the tables below will be applied and call action:
+Switch S3 - vlan_access_exact table             -> call action: vlan_access
+Switch S2 - standard_qiq_access_exact table     -> call action: standard_qiq_access
+Switch S1- standard_qiq_exact table             -> call action: standard_qiq_release
+Switch S4 - vlan_exact table                    -> call action: vlan_forward
+Switch S5 - vlan_exact table                    -> call action: vlan_release
 
 
 ## Step 4: Test **Selective QiQ - S1 and S2 forward all packets, received from H6, to H7**
@@ -108,7 +117,11 @@ Use the cmd to send a message from H4 to H6, but the packet will be forwarded to
    ```
 H7 will receive a packet sent from H4 with the payload "H4 Hello H6"
 
-In the test, 
+In the test, when the packet send from H4 to network, the tables below will be applied and call action:
+Switch S4 - vlan_access_exact table                -> call action: vlan_access
+Switch S1 - selective1_qiq_access_exact table      -> call action: selective1_qiq_access
+Switch S2- selective1_qiq_exact table              -> call action: selective1_qiq_release
+
 
 #### Cleaning up Mininet
 
