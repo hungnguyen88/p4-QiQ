@@ -5,12 +5,7 @@
 The objective of this exercise is to write a P4 program that
 implements basic QiQ.
 
-With IPv4 forwarding, the switch must perform the following actions
-for every packet: (i) update the source and destination MAC addresses,
-(ii) decrement the time-to-live (TTL) in the IP header, and (iii)
-forward the packet out the appropriate port.
- 
-Your switch will have a single table, which the control plane will
+Your switch will have tables, which the control plane will
 populate with static rules. Each rule will map an IP address to the
 MAC address and output port for the next hop. We have already defined
 the control plane rules, so you only need to implement the data plane
@@ -18,7 +13,7 @@ logic of your P4 program.
 
 We will use the following topology for this exercise. It is a single
 pod of a fat-tree topology and henceforth referred to as pod-topo:
-![pod-topo](./triangle-topo/qiq-network-simulation.png)
+![triangle-topo](./triangle-topo/qiq-network-simulation.png)
 
 Our P4 program will be written for the V1Model architecture implemented
 on P4.org's bmv2 software switch. The architecture file for the V1Model
@@ -26,10 +21,6 @@ can be found at: /usr/local/share/p4c/p4include/v1model.p4. This file
 desribes the interfaces of the P4 programmable elements in the architecture,
 the supported externs, as well as the architecture's standard metadata
 fields. We encourage you to take a look at it.
-
-> **Spoiler alert:** There is a reference solution in the `solution`
-> sub-directory. Feel free to compare your implementation to the
-> reference.
 
 ## Step 1: Run the (incomplete) starter code
 
@@ -46,16 +37,14 @@ up a switch in Mininet to test its behavior.
    ```
    This will:
    * compile `basic.p4`, and
-   * start the pod-topo in Mininet and configure all switches with
+   * start the triangle-topo in Mininet and configure all switches with
    the appropriate P4 program + table entries, and
    * configure all hosts with the commands listed in
-   [pod-topo/topology.json](./pod-topo/topology.json)
+   [triangle-topo/topology.json](./triangle-topo/topology.json)
 
-2. You should now see a Mininet command prompt. Try to ping between
-   hosts in the topology:
+2. You should now see a Mininet command prompt. Then you can open terminal of Hosts h1, h2, h3, h4, h5, h6
    ```bash
-   mininet> h1 ping h2
-   mininet> pingall
+   mininet> xterm h1 h2 h3 h4 h5 h6
    ```
 3. Type `exit` to leave each xterm and the Mininet command line.
    Then, to stop mininet:
@@ -66,98 +55,60 @@ up a switch in Mininet to test its behavior.
    ```bash
    make clean
    ```
+   
+**A note about the control plane**
 
-The ping failed because each switch is programmed
-according to `basic.p4`, which drops all packets on arrival.
-Your job is to extend this file so it forwards packets.
+A P4 program defines a packet-processing pipeline, but the rules within each table are inserted by the control plane. When a rule matches a packet, its action is invoked with parameters supplied by the control plane as part of the rule.
 
-### A note about the control plane
+## Step 2: Test Standard QiQ - Enable H2 send message to H5
 
-A P4 program defines a packet-processing pipeline, but the rules
-within each table are inserted by the control plane. When a rule
-matches a packet, its action is invoked with parameters supplied by
-the control plane as part of the rule.
+![triangle-topo](./triangle-topo/Standard-QiQ-Enable-H2-send-message-to-H5.png)
 
-In this exercise, we have already implemented the control plane
-logic for you. As part of bringing up the Mininet instance, the
-`make run` command will install packet-processing rules in the tables of
-each switch. These are defined in the `sX-runtime.json` files, where
-`X` corresponds to the switch number.
+Use the cmd to show all messages sent to H5:
+   ```bash
+   h5> ./receive.py
+   ```
+Use the cmd to send a message from H2 to H5:  
+   ```bash
+   h2> ./send_vlan.py 0.0.0.0 08:00:00:00:05:55 "H2 Hello H5"
+   ```
+H5 will receive a packet sent from H2 with the payload "H2 Hello H5"
 
-**Important:** We use P4Runtime to install the control plane rules. The
-content of files `sX-runtime.json` refer to specific names of tables, keys, and
-actions, as defined in the P4Info file produced by the compiler (look for the
-file `build/basic.p4.p4info.txt` after executing `make run`). Any changes in the P4
-program that add or rename tables, keys, or actions will need to be reflected in
-these `sX-runtime.json` files.
+In the test, 
 
-## Step 2: Implement L3 forwarding
+## Step 3: Test Standard QiQ - Enable H6 send message to H1
 
-The `basic.p4` file contains a skeleton P4 program with key pieces of
-logic replaced by `TODO` comments. Your implementation should follow
-the structure given in this file---replace each `TODO` with logic
-implementing the missing piece.
+![triangle-topo](./triangle-topo/Standard-QiQ-Enable-H6-send-message-to-H1.png)
 
-A complete `basic.p4` will contain the following components:
+Use the cmd to show all messages sent to H1:
+   ```bash
+   h1> ./receive.py
+   ```
+Use the cmd to send a message from H6 to H1:
+   ```bash
+   h6> ./send_vlan.py 0.0.0.0 08:00:00:00:01:11 "H6 Hello H1"
+   ```
+H1 will receive a packet sent from H6 with the payload "H6 Hello H1"
 
-1. Header type definitions for Ethernet (`ethernet_t`) and IPv4 (`ipv4_t`).
-2. **TODO:** Parsers for Ethernet and IPv4 that populate `ethernet_t` and `ipv4_t` fields.
-3. An action to drop a packet, using `mark_to_drop()`.
-4. **TODO:** An action (called `ipv4_forward`) that:
-	1. Sets the egress port for the next hop. 
-	2. Updates the ethernet destination address with the address of the next hop. 
-	3. Updates the ethernet source address with the address of the switch. 
-	4. Decrements the TTL.
-5. **TODO:** A control that:
-    1. Defines a table that will read an IPv4 destination address, and
-       invoke either `drop` or `ipv4_forward`.
-    2. An `apply` block that applies the table.   
-6. **TODO:** A deparser that selects the order
-    in which fields inserted into the outgoing packet.
-7. A `package` instantiation supplied with the parser, control, and deparser.
-    > In general, a package also requires instances of checksum verification
-    > and recomputation controls. These are not necessary for this tutorial
-    > and are replaced with instantiations of empty controls.
 
-## Step 3: Run your solution
+## Step 4: Test **Selective QiQ - S1 and S2 forward all packets, received from H6, to H7**
 
-Follow the instructions from Step 1. This time, you should be able to
-sucessfully ping between any two hosts in the topology. 
+![triangle-topo](./triangle-topo/Selective-QiQ-S1-and-S2-forward-all-packets-received-from-H4-to-H7.png)
 
-### Food for thought
+Use the cmd to show all messages sent to H6 and H7:
+   ```bash
+   h6> ./receive.py
+   ```
+   ```bash
+   h7> ./receive.py
+   ```
+Use the cmd to send a message from H4 to H6, but the packet will be forwarded to H7 by S2  
+   ```bash
+   h4> ./send_vlan.py 0.0.0.0 08:00:00:00:06:66 "H4 Hello H6"
+   ```
+H7 will receive a packet sent from H4 with the payload "H4 Hello H6"
 
-The "test suite" for your solution---sending pings between hosts in the
-topology---is not very robust. What else should you test to be confident
-that you implementation is correct?
-
-> Although the Python `scapy` library is outside the scope of this tutorial,
-> it can be used to generate packets for testing. The `send.py` file shows how
-> to use it.
-
-Other questions to consider:
- - How would you enhance your program to respond to ARP requests?
- - How would you enhance your program to support traceroute?
- - How would you enhance your program to support next hops?
- - Is this program enough to replace a router?  What's missing?
-
-### Troubleshooting
-
-There are several problems that might manifest as you develop your program:
-
-1. `basic.p4` might fail to compile. In this case, `make run` will
-report the error emitted from the compiler and halt.
-
-2. `basic.p4` might compile but fail to support the control plane
-rules in the `s1-runtime.json` through `s3-runtime.json` files that
-`make run` tries to install using P4Runtime. In this case, `make run` will
-report errors if control plane rules cannot be installed. Use these error
-messages to fix your `basic.p4` implementation.
-
-3. `basic.p4` might compile, and the control plane rules might be
-installed, but the switch might not process packets in the desired
-way. The `logs/sX.log` files contain detailed logs
-that describing how each switch processes each packet. The output is
-detailed and can help pinpoint logic errors in your implementation.
+In the test, 
 
 #### Cleaning up Mininet
 
