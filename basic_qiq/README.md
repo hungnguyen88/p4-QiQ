@@ -1,10 +1,9 @@
-# Implementing Basic Forwarding
+# Implementing Basic QiQ
 
 ## Introduction
 
 The objective of this exercise is to write a P4 program that
-implements basic forwarding. To keep things simple, we will just
-implement forwarding for IPv4.
+implements basic QiQ.
 
 With IPv4 forwarding, the switch must perform the following actions
 for every packet: (i) update the source and destination MAC addresses,
@@ -19,7 +18,7 @@ logic of your P4 program.
 
 We will use the following topology for this exercise. It is a single
 pod of a fat-tree topology and henceforth referred to as pod-topo:
-![pod-topo](./pod-topo/pod-topo.png)
+![pod-topo](./triangle-topo/qiq-network-simulation.png)
 
 Our P4 program will be written for the V1Model architecture implemented
 on P4.org's bmv2 software switch. The architecture file for the V1Model
