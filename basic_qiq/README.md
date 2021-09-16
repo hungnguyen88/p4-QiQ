@@ -75,17 +75,17 @@ Use the cmd to send a message from H2 to H5:
    ```
 H5 will receive a packet sent from H2 with the payload "H2 Hello H5"
 
-**In the test, when the packet send from H2 to network, the tables below will be applied and call an action:**
+**In the test, when the packets are sent from H2 to network, the tables below will be applied and call an action:**
    
-   Switch S5 - vlan_access_exact table             -> call action: vlan_access
+   *Switch S5 - vlan_access_exact table             -> call action: vlan_access
    
-   Switch S4 - vlan_exact table                    -> call action: vlan_forward
+   *Switch S4 - vlan_exact table                    -> call action: vlan_forward
    
-   Switch S1 - standard_qiq_access_exact  table    -> call action: standard_qiq_access
+   *Switch S1 - standard_qiq_access_exact  table    -> call action: standard_qiq_access
    
-   Switch S2 - standard_qiq_exact table            -> call action: standard_qiq_release
+   *Switch S2 - standard_qiq_exact table            -> call action: standard_qiq_release
    
-   Switch S3 - vlan_exact table                    -> call action: vlan_release
+   *Switch S3 - vlan_exact table                    -> call action: vlan_release
 
 ## Step 3: Test Standard QiQ - Enable H6 send message to H1
 
@@ -103,17 +103,17 @@ Use the cmd to send a message from H6 to H1:
    ```
 H1 will receive a packet sent from H6 with the payload "H6 Hello H1"
 
-**In the test, when the packet send from H6 to network, the tables below will be applied and call an action:**
+**In the test, when the packets are sent from H6 to network, the tables below will be applied and call an action:**
    
-   Switch S3 - vlan_access_exact table             -> call action: vlan_access
+   *Switch S3 - vlan_access_exact table             -> call action: vlan_access
    
-   Switch S2 - standard_qiq_access_exact table     -> call action: standard_qiq_access
+   *Switch S2 - standard_qiq_access_exact table     -> call action: standard_qiq_access
    
-   Switch S1- standard_qiq_exact table             -> call action: standard_qiq_release
+   *Switch S1- standard_qiq_exact table             -> call action: standard_qiq_release
    
-   Switch S4 - vlan_exact table                    -> call action: vlan_forward
+   *Switch S4 - vlan_exact table                    -> call action: vlan_forward
    
-   Switch S5 - vlan_exact table                    -> call action: vlan_release
+   *Switch S5 - vlan_exact table                    -> call action: vlan_release
 
 
 ## Step 4: Test **Selective QiQ - S1 and S2 forward all packets, received from H6, to H7**
@@ -135,13 +135,13 @@ Use the cmd to send a message from H4 to H6, but the packet will be forwarded to
    ```
 H7 will receive a packet sent from H4 with the payload "H4 Hello H6"
 
-**In the test, when the packet send from H4 to network, the tables below will be applied and call an action:**
+**In the test, when the packets are sent from H4 to network, the tables below will be applied and call an action:**
    
-   Switch S4 - vlan_access_exact table                -> call action: vlan_access
+   *Switch S4 - vlan_access_exact table                -> call action: vlan_access
    
-   Switch S1 - selective1_qiq_access_exact table      -> call action: selective1_qiq_access
+   *Switch S1 - selective1_qiq_access_exact table      -> call action: selective1_qiq_access
    
-   Switch S2- selective1_qiq_exact table              -> call action: selective1_qiq_release
+   *Switch S2- selective1_qiq_exact table              -> call action: selective1_qiq_release
 
 
 #### Cleaning up Mininet
